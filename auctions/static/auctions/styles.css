@@ -1,3 +1,11 @@
 body {
     padding: 10px;
 }
+.auct_title{
+    width: 140px;
+    height: 30px;
+}
+.submit_btn{
+    color: blue;
+    background-color: rebeccapurple;
+}

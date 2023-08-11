@@ -6,6 +6,8 @@ from django.urls import reverse
 
 from .models import User
 
+from django.contrib.auth.decorators import login_required
+
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -62,7 +64,9 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+@login_required
 def create_listing(request):
+    '''Let the user to make a new listing'''
     if request.method == "GET":
         return render(request, "auctions/create_listing.html")
     
