@@ -1,19 +1,28 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Create listing</h2>
-    <form action = "{ url 'create_listing'}">
-        {% csrf_token %}
-        <input type="text" placeholder="Auction title" name="title" class="auct_title">
-        <br>
-        <label for="descripton_area">Product description</label>
-        <br>
-        <textarea id="descripton_area" name="description"></textarea>
-        <br>
-        <input type="text" placeholder="Image url" name="image_url">
-        <br>
-        <input class="submit_btn" type="submit" value="Post the listing">
-
-    </form>
-
+    <div class="containerz">
+        <h2>Create listing</h2>
+        <form action = "{% url 'create_listing'%}" method="POST">
+            {% csrf_token %}
+            {{form.title.label}}:
+            <br>
+            {{form.title}}
+            <br>
+            {{form.description.label}}:
+            <br>
+            {{form.description}}
+            <br>
+            {{form.img_url.label}}:
+            <br>
+            {{form.img_url}}
+            <br>
+            {{form.price.label}}
+            <br>
+            {{form.price}}
+            <br>
+            {{form.start_bid}}
+            <input class="submit_btn" type="submit" value="Post the listing">
+        </form>
+    </div>
 {% endblock %}

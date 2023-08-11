@@ -1,0 +1,26 @@
+
+.containerz{
+    margin-left: 10px;
+}
+.auct_title, .img_url{
+    width: 500px;
+    height: 30px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.text_area{
+    width: 500px;
+    height: 250px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.submit_btn{
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: #4285F4;
+    color: white;
+    
+}
+.desc_lable{
+    margin-top: 30px;
+}

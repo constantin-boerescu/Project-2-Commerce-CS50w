@@ -14,10 +14,10 @@ class Category(models.Model):
 
 class AuctionListing(models.Model):
     title = models.CharField(max_length=64)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.CharField(max_length=640)
-    image_url = models.CharField(max_length=2048)
+    image_url = models.CharField(max_length=2048, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

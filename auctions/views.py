@@ -4,10 +4,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, AuctionListing
 
 from django.contrib.auth.decorators import login_required
 
+from .forms import CreateForm
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -68,7 +69,40 @@ def register(request):
 def create_listing(request):
     '''Let the user to make a new listing'''
     if request.method == "GET":
-        return render(request, "auctions/create_listing.html")
+        form = CreateForm()
+        return render(request, "auctions/create_listing.html",{
+            "form":form
+        })
     
     else:
-        pass
+
+        form = CreateForm(request.POST)
+
+        if form.is_valid():
+            title=form.cleaned_data["title"]
+            description=form.cleaned_data["description"]
+            img_url=form.cleaned_data["img_url"]
+            price=form.cleaned_data["price"]
+            starting_bid=form.cleaned_data["start_bid"]
+            auctions = AuctionListing(
+            owner=request.user,
+            title=title,
+            description=description,
+            image_url=img_url,
+            price=price,
+            starting_bid=starting_bid)
+            auctions.save()
+            print(f"{title} {description} {img_url}")
+            return render(request, "auctions/thanks.html",{
+                    "title":title,
+                    "description":description,
+                    "img_url":img_url,
+                })
+        else:
+            form = CreateForm()
+            return render(request, "auctions/thanks.html",{
+                    "title":title,
+                    "description":description,
+                    "img_url":img_url,
+                })
+    
