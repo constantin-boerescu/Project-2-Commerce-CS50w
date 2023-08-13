@@ -22,8 +22,8 @@ class CreateForm(forms.Form):
         required=False,
         initial=0.00,
         widget=forms.NumberInput(attrs={
-            'class': 'form-control form-group',
-            'placeholder': 'Estimated price (optional)',
+            'class': 'auct_title',
+            'placeholder': 'Estimated price',
             'min': '0.1',
             'max': '999999999.99',
             'step': '0.1'
@@ -33,8 +33,8 @@ class CreateForm(forms.Form):
         required=False,
         initial=0.00,
         widget=forms.NumberInput(attrs={
-            'class': 'form-control form-group',
-            'placeholder': 'start_bid price (optional)',
+            'class': 'auct_title',
+            'placeholder': 'start_bid price',
             'min': '0.1',
             'max': '999999999.99',
             'step': '0.1'

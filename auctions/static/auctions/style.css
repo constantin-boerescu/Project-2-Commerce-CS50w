@@ -24,3 +24,26 @@
 .desc_lable{
     margin-top: 30px;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.listing_container{
+    background-color: #4285F4;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.listing_container img{
+    max-width: 200px;
+    margin: 10px 0;
+}
+.right_section{
+    float:left;
+    width: 400px;
+    margin-right: 500px;
+    background-color: aquamarine;
+}

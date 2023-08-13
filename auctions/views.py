@@ -5,9 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import User, AuctionListing
-
 from django.contrib.auth.decorators import login_required
-
 from .forms import CreateForm
 
 def index(request):
@@ -77,22 +75,29 @@ def create_listing(request):
     else:
 
         form = CreateForm(request.POST)
-
+        # if the data is valid get the data form
         if form.is_valid():
             title=form.cleaned_data["title"]
             description=form.cleaned_data["description"]
             img_url=form.cleaned_data["img_url"]
             price=form.cleaned_data["price"]
             starting_bid=form.cleaned_data["start_bid"]
-            auctions = AuctionListing(
-            owner=request.user,
+
+            # get the owner username
+            curent_user = request.user
+
+            # create a new listing
+            new_listing = AuctionListing(
+            owner=curent_user,
             title=title,
             description=description,
             image_url=img_url,
-            price=price,
-            starting_bid=starting_bid)
-            auctions.save()
-            print(f"{title} {description} {img_url}")
+            price=float(price),
+            starting_bid=float(starting_bid))
+
+            # saves the data into the database
+            new_listing.save()
+            
             return render(request, "auctions/thanks.html",{
                     "title":title,
                     "description":description,
@@ -105,4 +110,17 @@ def create_listing(request):
                     "description":description,
                     "img_url":img_url,
                 })
-    
+        
+
+
+@login_required
+def active_listings(request):
+    entries = AuctionListing.objects.all()
+    for entry in entries:
+        if entry.image_url == "":
+            print("---------------------=====================")
+      
+        
+    return render(request, "auctions/active_listings.html",{
+        "entries":entries
+        })
