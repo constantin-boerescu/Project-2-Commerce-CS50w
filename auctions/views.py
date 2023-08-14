@@ -116,11 +116,16 @@ def create_listing(request):
 @login_required
 def active_listings(request):
     entries = AuctionListing.objects.all()
-    for entry in entries:
-        if entry.image_url == "":
-            print("---------------------=====================")
-      
-        
     return render(request, "auctions/active_listings.html",{
         "entries":entries
         })
+
+
+def listing_page(request, listing_id):
+    listing = AuctionListing.objects.get(pk=listing_id)
+
+
+    return render(request, "auctions/listing_page.html",{
+        "listing":listing,
+        })
+
