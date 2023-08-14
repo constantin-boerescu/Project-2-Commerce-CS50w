@@ -26,7 +26,7 @@ class Bids(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amout = models.DecimalField(max_digits=10, decimal_places=2)
     listing = models.ForeignKey(AuctionListing, on_delete=models.CASCADE)
-
+    time = models.DateTimeField(auto_now=True)
     def __str__(self):
         return f"{self.amout} paid by {self.user} for {self.listing}"
 

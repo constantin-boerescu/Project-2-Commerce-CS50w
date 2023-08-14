@@ -7,14 +7,26 @@
         <p>{{listing.description}}</p>
         {{listing.price}} $
         {% if user.is_authenticated %}
-            {% if is_in_wathclist %}
-                Remove from wathclist
+            {% if is_in_watchlist %}
+            <div class="watch_list_btn">
+                <form action="{% url 'remove_from_watchlist' listing_id=listing.id %}">
+                    {% csrf_token %}
+                    <input type="submit" value ='Remove from watchlist'>
+                </form>
+            </div>
             {% else %}
-            <form action="{% url 'add_to_watchlist' listing_id=listing.id %}">
-                {% csrf_token %}
-                <input type="submit" value ='Add to watchlist'>
-            </form>
+            <div class="watch_list_btn"></div>
+                <form action="{% url 'add_to_watchlist' listing_id=listing.id %}">
+                    {% csrf_token %}
+                    <input type="submit" value ='Add to watchlist'>
+                </form>
+            </div>
             {% endif %}
+            <form action="{% url 'add_bids' listing_id=listing.id %}">
+                {% csrf_token %}
+                {{bids.amout}}
+                <input type="number" placeholder="Bid" value="{{bids}}">
+            </form>
         {% endif %}
     </div>
     

@@ -52,3 +52,10 @@ input::-webkit-inner-spin-button {
     margin-bottom:20px;
     max-width: 300px;
 }
+
+.watch_list_btn {
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: #4285F4;
+    color: white;
+}

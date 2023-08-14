@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, AuctionListing
+from .models import User, AuctionListing, Bids
 from django.contrib.auth.decorators import login_required
 from .forms import CreateForm
 
@@ -73,7 +73,6 @@ def create_listing(request):
         })
     
     else:
-
         form = CreateForm(request.POST)
         # if the data is valid get the data form
         if form.is_valid():
@@ -114,31 +113,67 @@ def create_listing(request):
 
 
 def active_listings(request):
+    '''Rendes the active listing pages'''
+
+    # gets all of the listings
     entries = AuctionListing.objects.all()
+    # renders the page
     return render(request, "auctions/active_listings.html",{
         "entries":entries
         })
 
-'''TO BE CORRECTED'''
-def listing_page(request, listing_id):
-    listing = AuctionListing.objects.get(pk=listing_id)
-    current_user = request.user
-    print(current_user)
-    is_in_wathclist = False
-    print(listing.watch_list.values_list('id', flat=True))
-    if current_user in listing.watch_list.values_list('id', flat=True):
-        print("+++++++++++++++IT ITS+++++++++++=")
-        is_in_wathclist = True
 
+def listing_page(request, listing_id):
+    '''Returns the listing page by id'''
+
+    #  gets the model by id
+    listing = AuctionListing.objects.get(pk=listing_id)
+    # gets the current user 
+    current_user = request.user
+    #get the last bid
+    bids = Bids.objects.all()
+    print(f"**************************************{bids.amout}___________________________")
+
+    # if the user is in the watch or not the is_in_watchlist is updated
+    if current_user in listing.watch_list.all():
+        is_in_watchlist = True
+    else :
+        is_in_watchlist = False
+
+    # renders the listing page
     return render(request, "auctions/listing_page.html",{
         "listing":listing,
-        "is_in_wathclist":is_in_wathclist,
+        "is_in_watchlist":is_in_watchlist,
+        "bids":bids,
         })
-'''TO BE CORRECTED'''
+
+
 
 def add_to_watchlist(request, listing_id):
+    '''Ads a user to the watchlist'''
+
+    #  gets the lisitng model by id
     listing = AuctionListing.objects.get(pk=listing_id)
     current_user = request.user
+    # gets the current user 
     listing.watch_list.add(current_user)
-    print("ADDED")
+    # redirects to the lising page
     return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))
+
+def remove_from_watchlist(request, listing_id):
+    '''Removes a user from the watchlist'''
+
+    #  gets the lisitng model by id
+    listing = AuctionListing.objects.get(pk=listing_id)
+    # gets the current user 
+    current_user = request.user
+    listing.watch_list.remove(current_user)
+    # redirects to the lising page
+    return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))
+
+def add_bids(request, listing_id):
+    '''Updates the bid amount for a listing'''
+
+    # getes the bid by id
+    bid = Bids.object.get(listing=listing_id)
+    print(bid)
