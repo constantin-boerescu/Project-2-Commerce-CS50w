@@ -6,7 +6,16 @@
         <h4>{{listing.title}}</h4>
         <p>{{listing.description}}</p>
         {{listing.price}} $
-
+        {% if user.is_authenticated %}
+            {% if is_in_wathclist %}
+                Remove from wathclist
+            {% else %}
+            <form action="{% url 'add_to_watchlist' listing_id=listing.id %}">
+                {% csrf_token %}
+                <input type="submit" value ='Add to watchlist'>
+            </form>
+            {% endif %}
+        {% endif %}
     </div>
     
 

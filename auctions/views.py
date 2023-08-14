@@ -113,19 +113,32 @@ def create_listing(request):
         
 
 
-@login_required
 def active_listings(request):
     entries = AuctionListing.objects.all()
     return render(request, "auctions/active_listings.html",{
         "entries":entries
         })
 
-
+'''TO BE CORRECTED'''
 def listing_page(request, listing_id):
     listing = AuctionListing.objects.get(pk=listing_id)
-
+    current_user = request.user
+    print(current_user)
+    is_in_wathclist = False
+    print(listing.watch_list.values_list('id', flat=True))
+    if current_user in listing.watch_list.values_list('id', flat=True):
+        print("+++++++++++++++IT ITS+++++++++++=")
+        is_in_wathclist = True
 
     return render(request, "auctions/listing_page.html",{
         "listing":listing,
+        "is_in_wathclist":is_in_wathclist,
         })
+'''TO BE CORRECTED'''
 
+def add_to_watchlist(request, listing_id):
+    listing = AuctionListing.objects.get(pk=listing_id)
+    current_user = request.user
+    listing.watch_list.add(current_user)
+    print("ADDED")
+    return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))

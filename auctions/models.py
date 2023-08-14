@@ -18,7 +18,7 @@ class AuctionListing(models.Model):
     description = models.CharField(max_length=640)
     image_url = models.CharField(max_length=2048, blank=True, default="https://i.stack.imgur.com/mwFzF.png")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
-
+    watch_list = models.ManyToManyField(User, blank=True, related_name="watch_list")
     def __str__(self):
         return f"{self.title} owned by: {self.owner}"
 
