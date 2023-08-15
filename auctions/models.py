@@ -11,25 +11,9 @@ class Categories(models.Model):
     def __str__(self):
         return f"{self.category_title}"
     
-class AuctionListing(models.Model):
-    title = models.CharField(max_length=64)
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
-    description = models.CharField(max_length=640)
-    image_url = models.CharField(max_length=2048, blank=True, default="https://i.stack.imgur.com/mwFzF.png")
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
-    watch_list = models.ManyToManyField(User, blank=True, related_name="watch_list")
-    def __str__(self):
-        return f"{self.title} owned by: {self.owner}"
-
 class Bids(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amout = models.DecimalField(max_digits=10, decimal_places=2)
-    listing = models.ForeignKey(AuctionListing, on_delete=models.CASCADE)
-    time = models.DateTimeField(auto_now=True)
-    def __str__(self):
-        return f"{self.amout} paid by {self.user} for {self.listing}"
-
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 class Comments(models.Model):
     comment = models.CharField(max_length=640)
@@ -37,3 +21,16 @@ class Comments(models.Model):
 
     def __str__(self):
         return f"{self.user} said: {self.comment}"
+
+class AuctionListing(models.Model):
+    title = models.CharField(max_length=64)
+    price = models.ForeignKey(Bids, on_delete=models.CASCADE, related_name="bid_ammount")
+    description = models.CharField(max_length=640)
+    image_url = models.CharField(max_length=2048, blank=True, default="https://i.stack.imgur.com/mwFzF.png")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
+    watch_list = models.ManyToManyField(User, blank=True, related_name="watch_list")
+    comment = models.ForeignKey(Comments, on_delete=models.CASCADE, related_name="add_comment", blank=True, null=True)
+    def __str__(self):
+        return f"{self.title} owned by: {self.owner}"
+
+
