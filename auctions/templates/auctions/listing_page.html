@@ -5,7 +5,7 @@
         <img src="{{listing.image_url}}" alt="image of the listing">
         <h4>{{listing.title}}</h4>
         <p>{{listing.description}}</p>
-        {{bid}} $
+        
         {% if user.is_authenticated %}
             {% if is_in_watchlist %}
             <div class="watch_list_btn">
@@ -15,30 +15,36 @@
                 </form>
             </div>
             {% else %}
-            <div class="watch_list_btn"></div>
                 <form action="{% url 'add_to_watchlist' listing_id=listing.id %}">
                     {% csrf_token %}
-                    <input type="submit" value ='Add to watchlist'>
+                    <input class="watch_list_btn" type="submit" value ='Add to watchlist'>
                 </form>
-            </div>
             {% endif %}
+            <div class="price">Bid: {{bid}} $</div>
             <form action="{% url 'update_bids' listing_id=listing.id %}" method="POST">
                 {% csrf_token %}
-                {{bids.amout}}
-                <input type="number" placeholder="Bid" value="{{bids}}" name="new_bid">
-                <input type="submit" value ='Place a bid'>
+                <input type="number" placeholder="Bid" value="{{bids}}" name="new_bid" class="text_form">
+                <input type="submit" value ='Place a bid' class="watch_list_btn">
             </form>
             <form action="{% url 'add_comment' listing_id=listing.id %}" method="POST">
                 {% csrf_token %}
-                <input type="textarea" placeholder="comment" name="comment">
-                <input type="submit" value ='Add a new comment'>
-
+                <textarea placeholder="Comment" name="comment" class="comment_form" rows="1" cols="50" wrap="physical"></textarea>
+                <br>
+                <input type="submit" value ='Add a new comment' class="watch_list_btn">
             </form>
+            
         {% endif %}
-        {% for comment in comments %}
-            <span>{{comment}}</span>
-        {% endfor %}
     </div>
+        <div class="comments">
+        {% for comment in comments %}
+            <div class="each_comment">
+                <span>{{comment.user}}:</span>
+                <span>{{comment.comment}}</span>
+                <br>
+            </div>
+        {% endfor %}
+        </div>  
+   
     
 
 {% endblock %}

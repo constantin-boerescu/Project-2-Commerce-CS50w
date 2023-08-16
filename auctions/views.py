@@ -139,15 +139,14 @@ def listing_page(request, listing_id):
     else :
         is_in_watchlist = False
 
-    comments = listing.comment
+    comments = Comments.objects.filter(listing = listing)
 
     # renders the listing page
     return render(request, "auctions/listing_page.html",{
         "listing":listing,
         "is_in_watchlist":is_in_watchlist,
         "bid":current_bid.amount,
-        "comments" : comments,
-
+        "comments":comments,
         })
 
 
@@ -189,10 +188,15 @@ def update_bids(request, listing_id):
     return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))
 
 
-'''TODO COMMENT'''
 def add_comment(request, listing_id):
+    # geting the auction list
+    auction_listing = AuctionListing.objects.get(pk=listing_id)
+    # get the user
     current_user = request.user
+    # get the comment from the form
     comment = request.POST["comment"]
-    comment = Comments(comment = comment, user = current_user)
-    print(comment.user)
+    # save in the model
+    comment = Comments(comment = comment, user = current_user, listing=auction_listing)
+    comment.save()
+
     return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))

@@ -29,8 +29,15 @@ class AuctionListing(models.Model):
     image_url = models.CharField(max_length=2048, blank=True, default="https://i.stack.imgur.com/mwFzF.png")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     watch_list = models.ManyToManyField(User, blank=True, related_name="watch_list")
-    comment = models.ForeignKey(Comments, on_delete=models.CASCADE, related_name="add_comment", blank=True, null=True)
+
     def __str__(self):
         return f"{self.title} owned by: {self.owner}"
 
 
+
+class Comments(models.Model):
+    comment = models.CharField(max_length=640)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(AuctionListing, on_delete=models.CASCADE, blank=True, null=True, related_name="lisitng_commnet")
+    def __str__(self):
+        return f"{self.user} said: {self.comment}"

@@ -7,7 +7,6 @@ class CreateForm(forms.Form):
         required=True, 
         widget=forms.TextInput(attrs={'class':'auct_title', 'placehoder':'Title'}))
     
-
     description = forms.CharField(
         label='Description',
         widget=forms.Textarea(attrs={'class':'text_area', 'placehoder':'Description'}))
@@ -17,6 +16,7 @@ class CreateForm(forms.Form):
         max_length=2048,
         required=False, 
         widget=forms.TextInput(attrs={'class':'auct_title', 'placehoder':'Image url'}))
+    
     price = forms.DecimalField(
         label='Price',
         required=False,
@@ -28,6 +28,7 @@ class CreateForm(forms.Form):
             'max': '999999999.99',
             'step': '0.1'
         }))
+    
     start_bid = forms.DecimalField(
         label='start_bid',
         required=False,

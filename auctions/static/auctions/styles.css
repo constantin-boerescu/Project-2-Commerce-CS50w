@@ -1,4 +1,6 @@
-
+.nav_bar{
+    margin: 10px;
+}
 .containerz{
     margin-left: 10px;
 }
@@ -56,6 +58,40 @@ input::-webkit-inner-spin-button {
 .watch_list_btn {
     margin-top: 10px;
     border-radius: 5px;
-    width: 100px;
+    width: 180px;
+    height: 45px;
     color: white;
+    background-color: #4285F4;
+    border: none;
+}
+.watch_list_btn:hover {
+    background-color: #76a9fa;
+}
+.comments{
+    background-color: #f3f3f3;
+}
+.each_comment{
+
+    padding: 20px 20px ;
+
+}
+
+.text_form{
+    width: 300px;
+    height: 45px;
+    border-radius: 5px;
+    border: 2px solid #cecece;
+
+}
+.comment_form{
+    margin-top: 20px;
+    width: 500px;
+    height: 300px;
+    border-radius: 5px;
+    border: 2px solid #cecece;
+
+}
+.price{
+    margin-top: 10px;
+    font-size: 20px;
 }
