@@ -129,8 +129,12 @@ def listing_page(request, listing_id):
     listing = AuctionListing.objects.get(pk=listing_id)
     # gets the current user 
     current_user = request.user
-
-    #get the current bid
+    # gets if the current user is the owner of the listing
+    if current_user == listing.owner:
+        is_owner = True
+    else:
+        is_owner = False
+    # get the current bid
     current_bid = listing.price
 
     # if the user is in the watch or not the is_in_watchlist is updated
@@ -141,12 +145,16 @@ def listing_page(request, listing_id):
 
     comments = Comments.objects.filter(listing = listing)
 
+    is_active = listing.is_active
+
     # renders the listing page
     return render(request, "auctions/listing_page.html",{
         "listing":listing,
         "is_in_watchlist":is_in_watchlist,
         "bid":current_bid.amount,
         "comments":comments,
+        "is_active":is_active,
+        "is_owner":is_owner,
         })
 
 
@@ -178,8 +186,10 @@ def update_bids(request, listing_id):
     new_bid = request.POST["new_bid"]
     # gets the lisitng model by id
     listing = AuctionListing.objects.get(pk=listing_id)
+    is_active = listing.is_active
+
     current_user = request.user
-    if int(new_bid) > int(listing.price.amount):
+    if int(new_bid) > int(listing.price.amount) and is_active:
         update_bid = Bids(user=current_user, amount = new_bid)
         update_bid.save()
         listing.price = update_bid
@@ -198,5 +208,14 @@ def add_comment(request, listing_id):
     # save in the model
     comment = Comments(comment = comment, user = current_user, listing=auction_listing)
     comment.save()
+
+    return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))
+
+def close_listing(request, listing_id):
+    # geting the auction list
+    auction_listing = AuctionListing.objects.get(pk=listing_id)
+    # close the listing
+    auction_listing.is_active = False
+    auction_listing.save()
 
     return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))

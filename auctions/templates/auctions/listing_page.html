@@ -5,15 +5,24 @@
         <img src="{{listing.image_url}}" alt="image of the listing">
         <h4>{{listing.title}}</h4>
         <p>{{listing.description}}</p>
+        {% if is_active %}
+            Status: <span class="active">Active</span>
+            {% if is_owner %}
+                <form action ="{% url 'close_listing' listing_id=listing.id %}">
+                    <input type="submit" value="Close listing" class="watch_list_btn">
+                </form>
+
+            {% endif %}
+        {% else %}
+            Status: <span class="inactive">Inactive</span>
+        {% endif %}
         
         {% if user.is_authenticated %}
             {% if is_in_watchlist %}
-            <div class="watch_list_btn">
                 <form action="{% url 'remove_from_watchlist' listing_id=listing.id %}">
                     {% csrf_token %}
-                    <input type="submit" value ='Remove from watchlist'>
+                    <input class="watch_list_btn" type="submit" value ='Remove from watchlist'>
                 </form>
-            </div>
             {% else %}
                 <form action="{% url 'add_to_watchlist' listing_id=listing.id %}">
                     {% csrf_token %}
@@ -32,7 +41,6 @@
                 <br>
                 <input type="submit" value ='Add a new comment' class="watch_list_btn">
             </form>
-            
         {% endif %}
     </div>
         <div class="comments">
