@@ -56,7 +56,7 @@ input::-webkit-inner-spin-button {
 }
 
 .watch_list_btn {
-    margin-top: 10px;
+    margin-top: 15px;
     border-radius: 5px;
     width: 180px;
     height: 45px;
@@ -89,8 +89,14 @@ input::-webkit-inner-spin-button {
     height: 300px;
     border-radius: 5px;
     border: 2px solid #cecece;
-
 }
+.congrats{
+    padding: 10px;
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+}
+
 .price{
     margin-top: 10px;
     font-size: 20px;

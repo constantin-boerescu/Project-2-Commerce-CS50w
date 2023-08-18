@@ -4,13 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, AuctionListing, Bids, Comments
+from .models import User, AuctionListing, Bids, Comments, Categories
 from django.contrib.auth.decorators import login_required
 from .forms import CreateForm
 
 def index(request):
     return render(request, "auctions/index.html")
-
 
 def login_view(request):
     if request.method == "POST":
@@ -31,11 +30,9 @@ def login_view(request):
     else:
         return render(request, "auctions/login.html")
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
-
 
 def register(request):
     if request.method == "POST":
@@ -68,6 +65,7 @@ def create_listing(request):
     '''Let the user to make a new listing'''
     if request.method == "GET":
         form = CreateForm()
+        
         return render(request, "auctions/create_listing.html",{
             "form":form
         })
@@ -110,16 +108,34 @@ def create_listing(request):
                 })
         
 
-
 def active_listings(request):
     '''Rendes the active listing pages'''
+    if request.method == "GET":
+        entries = AuctionListing.objects.all()
+        categories = Categories.objects.all()
+        # renders the page
+        return render(request, "auctions/active_listings.html",{
+            "entries":entries,
+            "categories":categories,
+            })
+    else:
+        """TODO TO BE REPAIRED"""
+        form = CreateForm(request.POST)
 
-    # gets all of the listings
-    entries = AuctionListing.objects.all()
-    # renders the page
-    return render(request, "auctions/active_listings.html",{
-        "entries":entries
-        })
+        
+        category=request.POST["category"]
+
+        print(category)
+
+        # gets all of the listings
+        entries = AuctionListing.objects.filter(category = category)
+        # categories
+        categories = Categories.objects.all()
+        # renders the page
+        return render(request, "auctions/active_listings.html",{
+            "entries":entries,
+            "categories":categories,
+            })
 
 
 def listing_page(request, listing_id):
@@ -147,6 +163,14 @@ def listing_page(request, listing_id):
 
     is_active = listing.is_active
 
+    bid_winner = Bids.objects.latest('user')
+
+    # gets the winner of the biding
+    if is_active == False and current_user == bid_winner.user:
+        is_winner = True
+    else:
+        is_winner = False
+        
     # renders the listing page
     return render(request, "auctions/listing_page.html",{
         "listing":listing,
@@ -155,6 +179,7 @@ def listing_page(request, listing_id):
         "comments":comments,
         "is_active":is_active,
         "is_owner":is_owner,
+        "is_winner":is_winner
         })
 
 
@@ -219,3 +244,6 @@ def close_listing(request, listing_id):
     auction_listing.save()
 
     return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))
+
+def select_category(request):
+    return HttpResponseRedirect(reverse("active_listings"))

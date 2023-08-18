@@ -40,3 +40,9 @@ class CreateForm(forms.Form):
             'max': '999999999.99',
             'step': '0.1'
         }))
+    
+    category = forms.CharField(
+        label='Category', 
+        max_length=100,
+        required=True, 
+        widget=forms.TextInput(attrs={'class':'auct_title', 'placehoder':'Category'}))

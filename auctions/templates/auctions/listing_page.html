@@ -9,14 +9,20 @@
             Status: <span class="active">Active</span>
             {% if is_owner %}
                 <form action ="{% url 'close_listing' listing_id=listing.id %}">
+                    {% csrf_token %}
                     <input type="submit" value="Close listing" class="watch_list_btn">
                 </form>
 
             {% endif %}
         {% else %}
-            Status: <span class="inactive">Inactive</span>
+                {% if is_winner %}
+                <span class="congrats">Congratulations! You've won this bid!</span>  
+                {% else %}
+                Status: <span class="inactive">Inactive</span>
+                {% endif %}
         {% endif %}
-        
+        <br>
+            Category: {{listing.category}}
         {% if user.is_authenticated %}
             {% if is_in_watchlist %}
                 <form action="{% url 'remove_from_watchlist' listing_id=listing.id %}">
