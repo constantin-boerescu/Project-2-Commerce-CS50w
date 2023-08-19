@@ -112,7 +112,7 @@ def active_listings(request):
     '''Rendes the active listing pages'''
 
     if request.method == "GET":
-        entries = AuctionListing.objects.all()
+        entries = AuctionListing.objects.filter(is_active=True)
         categories = Categories.objects.all()
         # renders the page
         return render(request, "auctions/active_listings.html",{
@@ -248,10 +248,11 @@ def close_listing(request, listing_id):
 
     return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))
 
+@login_required
 def watch_list(request):
     # get the user
     current_user = request.user
-
+    # get all the lisitings based the user watch list 
     entries = AuctionListing.objects.filter(watch_list = current_user)
     # renders the page
     return render(request, "auctions/watch_list.html",{

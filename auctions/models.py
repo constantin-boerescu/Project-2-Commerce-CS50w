@@ -32,6 +32,6 @@ class AuctionListing(models.Model):
 class Comments(models.Model):
     comment = models.CharField(max_length=640)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    listing = models.ForeignKey(AuctionListing, on_delete=models.CASCADE, blank=True, null=True, related_name="lisitng_commnet")
+    listing = models.ForeignKey(AuctionListing, on_delete=models.CASCADE, blank=True, null=True, related_name="lisitng_comment")
     def __str__(self):
         return f"{self.user} said: {self.comment}"
