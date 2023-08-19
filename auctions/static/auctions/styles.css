@@ -107,3 +107,22 @@ input::-webkit-inner-spin-button {
 .inactive{
     color: red;
 }
+.sbmt_btn{
+    width: 120px;
+    height: 30px;
+    margin-left : 20px;
+    margin-bottom: 15px;
+    background-color: #4285F4;
+    color: white;
+    border-radius: 5px;
+    border:none;
+}
+.sbmt_btn:hover{
+    background-color: #76a9fa;
+}
+.chose_div{
+    margin-left: 10px;
+}
+#cat_view{
+    margin-left: 10px;
+}

@@ -3,15 +3,19 @@
 {% block body %}
     <form action="{% url 'active_listings' %}" method="POST" id="categoryform">
         {% csrf_token %}
+        <div class="chose_div">
         <label for="categories">Choose a category:</label>
-        <select name="categories" id="categories" form="categoryform">
-            <option value="{{all}}">All</option>
+        <select name="categories" id="categories" form="categoryform" class="sbmt_btn">
+            <option value="all">All</option>
             {% for category in categories %}
             <option value="{{category}}">{{category}}</option>
             {% endfor %}
-        <input type="submit" value="Select">
-
+        <input type="submit" value="Select" class="sbmt_btn">
+        </div>
     </form>
+    {% if chosen_category %}
+        <p id = "cat_view">Currently viewing: {{ chosen_category }}</p>
+    {% endif %}
     {% for entry in entries %}
         <div class="listing_container">
             <img src="{{entry.image_url}}" alt="image of the listing">
@@ -19,6 +23,7 @@
                 <h5>{{entry.title}}</h5>
                 <p>{{entry.description}}</p>
                 <p>{{entry.category}}</p>
+                <p>{{entry.created_at}}</p>
                 <a href="{% url 'listing_page' listing_id=entry.id %}">More details</a>
             </div>
 

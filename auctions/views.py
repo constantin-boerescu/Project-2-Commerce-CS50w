@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import CreateForm
 
 def index(request):
-    return render(request, "auctions/index.html")
+        return HttpResponseRedirect(reverse("active_listings"))
 
 def login_view(request):
     if request.method == "POST":
@@ -110,6 +110,7 @@ def create_listing(request):
 
 def active_listings(request):
     '''Rendes the active listing pages'''
+
     if request.method == "GET":
         entries = AuctionListing.objects.all()
         categories = Categories.objects.all()
@@ -118,23 +119,26 @@ def active_listings(request):
             "entries":entries,
             "categories":categories,
             })
-    else:
-        """TODO TO BE REPAIRED"""
-        form = CreateForm(request.POST)
-
-        
-        category=request.POST["category"]
-
-        print(category)
-
-        # gets all of the listings
-        entries = AuctionListing.objects.filter(category = category)
-        # categories
+    
+    # if the request method is post
+    else:   
+        # takes the chosen category from the user
+        chosen_category = request.POST.get("categories")
+        # if the chosen category is all displays all the listings
+        if chosen_category == "all":
+            entries = AuctionListing.objects.all()
+        # else filters the categories by categories
+        else:
+            categoty_db = Categories.objects.get(category_title=chosen_category)
+            # gets all of the listings
+            entries = AuctionListing.objects.filter(category = categoty_db)
+        # get all categories
         categories = Categories.objects.all()
         # renders the page
         return render(request, "auctions/active_listings.html",{
             "entries":entries,
             "categories":categories,
+            "chosen_category":chosen_category.capitalize,
             })
 
 
@@ -181,7 +185,6 @@ def listing_page(request, listing_id):
         "is_owner":is_owner,
         "is_winner":is_winner
         })
-
 
 
 def add_to_watchlist(request, listing_id):
@@ -245,5 +248,12 @@ def close_listing(request, listing_id):
 
     return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))
 
-def select_category(request):
-    return HttpResponseRedirect(reverse("active_listings"))
+def watch_list(request):
+    # get the user
+    current_user = request.user
+
+    entries = AuctionListing.objects.filter(watch_list = current_user)
+    # renders the page
+    return render(request, "auctions/watch_list.html",{
+        "entries":entries,
+        })

@@ -21,7 +21,7 @@
                 Status: <span class="inactive">Inactive</span>
                 {% endif %}
         {% endif %}
-        <br>
+        <p>{{listing.created_at}}</p>
             Category: {{listing.category}}
         {% if user.is_authenticated %}
             {% if is_in_watchlist %}
@@ -48,6 +48,7 @@
                 <input type="submit" value ='Add a new comment' class="watch_list_btn">
             </form>
         {% endif %}
+        
     </div>
         <div class="comments">
         {% for comment in comments %}

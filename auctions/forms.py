@@ -41,6 +41,7 @@ class CreateForm(forms.Form):
             'step': '0.1'
         }))
     
+    
     category = forms.CharField(
         label='Category', 
         max_length=100,

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -15,13 +16,6 @@ class Bids(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
-class Comments(models.Model):
-    comment = models.CharField(max_length=640)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user} said: {self.comment}"
-
 class AuctionListing(models.Model):
     title = models.CharField(max_length=64)
     price = models.ForeignKey(Bids, on_delete=models.CASCADE, related_name="bid_ammount")
@@ -31,11 +25,9 @@ class AuctionListing(models.Model):
     watch_list = models.ManyToManyField(User, blank=True, related_name="watch_list")
     is_active = models.BooleanField(default=True)
     category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True, blank=True, related_name="categories",)
-
+    created_at = models.DateTimeField(default=timezone.now)
     def __str__(self):
         return f"{self.title} owned by: {self.owner}"
-
-
 
 class Comments(models.Model):
     comment = models.CharField(max_length=640)
