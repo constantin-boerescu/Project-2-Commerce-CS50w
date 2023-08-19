@@ -78,10 +78,12 @@ def create_listing(request):
             description=form.cleaned_data["description"]
             img_url=form.cleaned_data["img_url"]
             price=form.cleaned_data["price"]
+            category=form.cleaned_data["category"]
 
             # get the owner username
             curent_user = request.user
             new_bid = Bids.objects.create(user=curent_user, amount=price)
+            new_category = Categories.objects.create(category_title=category)
 
             # default image
             if img_url == '':
@@ -93,6 +95,7 @@ def create_listing(request):
             description=description,
             image_url=img_url,
             price = new_bid,
+            category = new_category,
             )
             # saves the data into the database
 
@@ -126,12 +129,12 @@ def active_listings(request):
         chosen_category = request.POST.get("categories")
         # if the chosen category is all displays all the listings
         if chosen_category == "all":
-            entries = AuctionListing.objects.all()
+            entries = AuctionListing.objects.filter(is_active=True)
         # else filters the categories by categories
         else:
             categoty_db = Categories.objects.get(category_title=chosen_category)
             # gets all of the listings
-            entries = AuctionListing.objects.filter(category = categoty_db)
+            entries = AuctionListing.objects.filter(category = categoty_db, is_active=True)
         # get all categories
         categories = Categories.objects.all()
         # renders the page
