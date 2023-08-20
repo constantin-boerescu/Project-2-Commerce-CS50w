@@ -17,9 +17,14 @@
             <br>
             {{form.img_url}}
             <br>
-            {{form.category.label}}
+            <label for="categories">Choose a category:</label>
             <br>
-            {{form.category}}
+            <select name="category" id="category" class="submit_btn">
+                <option value="No category">No category</option>
+                {% for category in categories %}
+                <option value="{{category}}">{{category}}</option>
+                {% endfor %}
+            </select>
             <br>
             {{form.price.label}}
             <br>

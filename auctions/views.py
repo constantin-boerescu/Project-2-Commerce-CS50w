@@ -65,25 +65,26 @@ def create_listing(request):
     '''Let the user to make a new listing'''
     if request.method == "GET":
         form = CreateForm()
-        
+        categories = Categories.objects.all()
         return render(request, "auctions/create_listing.html",{
-            "form":form
+            "form":form,
+            "categories":categories,
         })
     
     else:
         form = CreateForm(request.POST)
         # if the data is valid get the data form
+        category = request.POST["category"]
         if form.is_valid():
             title=form.cleaned_data["title"]
             description=form.cleaned_data["description"]
             img_url=form.cleaned_data["img_url"]
             price=form.cleaned_data["price"]
-            category=form.cleaned_data["category"]
 
             # get the owner username
             curent_user = request.user
             new_bid = Bids.objects.create(user=curent_user, amount=price)
-            new_category = Categories.objects.create(category_title=category)
+            new_category = Categories.objects.get(category_title=category)
 
             # default image
             if img_url == '':

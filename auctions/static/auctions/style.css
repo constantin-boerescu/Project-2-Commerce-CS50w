@@ -5,11 +5,12 @@
     margin-left: 10px;
 }
 .auct_title, .img_url{
-    width: 500px;
-    height: 30px;
+    max-width: 500px;
+    max-height: 30px;
     margin-top: 10px;
     border-radius: 5px;
 }
+
 .text_area{
     width: 500px;
     height: 250px;
@@ -17,11 +18,16 @@
     margin-top: 20px;
 }
 .submit_btn{
+    width: 140px;
+    height: 40px;
     margin-top: 10px;
+    margin-bottom: 10px;
     border-radius: 5px;
     background-color: #4285F4;
     color: white;
-    
+}
+.submit_btn:hover {
+    background-color: #76a9fa;
 }
 .desc_lable{
     margin-top: 30px;
@@ -42,6 +48,7 @@ input::-webkit-inner-spin-button {
 .listing_container img{
     max-width: 200px;
     margin: 20px 0 10px 10px;
+    object-fit: contain;
 }
 .right_section{
     float:left;
@@ -117,7 +124,7 @@ input::-webkit-inner-spin-button {
     border-radius: 5px;
     border:none;
 }
-.sbmt_btn:hover{
+.sbmt_btn:hover {
     background-color: #76a9fa;
 }
 .chose_div{
