@@ -5,8 +5,8 @@
     margin-left: 10px;
 }
 .auct_title, .img_url{
-    max-width: 500px;
-    max-height: 30px;
+    width: 500px;
+    height: 30px;
     margin-top: 10px;
     border-radius: 5px;
 }
@@ -132,4 +132,7 @@ input::-webkit-inner-spin-button {
 }
 #cat_view{
     margin-left: 10px;
+}
+.msg{
+    margin-left: 20px;
 }

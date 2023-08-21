@@ -16,11 +16,14 @@
             {% endif %}
         {% else %}
                 {% if is_winner %}
+
                 <span class="congrats">Congratulations! You've won this bid!</span>  
+                <br>
                 {% else %}
                 Status: <span class="inactive">Inactive</span>
                 {% endif %}
         {% endif %}
+        <br>
         <p>{{listing.created_at}}</p>
             Category: {{listing.category}}
         {% if user.is_authenticated %}

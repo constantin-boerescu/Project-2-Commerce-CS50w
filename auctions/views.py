@@ -226,8 +226,15 @@ def update_bids(request, listing_id):
         update_bid.save()
         listing.price = update_bid
         listing.save()
+        return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))
+    else:
 
-    return HttpResponseRedirect(reverse("listing_page", args=(listing_id,)))
+        return render(request, "auctions/thanks.html",{
+            "message":"The listing is inactive or the bid is to low",
+
+            })
+
+    
 
 
 def add_comment(request, listing_id):
